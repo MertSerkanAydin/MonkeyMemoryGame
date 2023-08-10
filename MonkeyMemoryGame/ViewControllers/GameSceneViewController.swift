@@ -11,15 +11,13 @@ class GameSceneViewController: UIViewController, UICollectionViewDelegate, UICol
     
     @IBOutlet weak var timerLabel: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
+    
     var model = NumberModel()
     var numberArray = [Number]()
     var lastPickingNumber = 0
-    var itemCell: NumbersOfGameCollectionViewCell?
-    
+    var cellArray = [NumbersOfGameCollectionViewCell]()
     var timer: Timer?
-    var milliseconds: Float = 13 * 1000 // 13 Seconds
-    
-    var firstFlippedNumberIndex: IndexPath?
+    var milliseconds: Float = 3 * 1000 // 13 Seconds
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,16 +39,26 @@ class GameSceneViewController: UIViewController, UICollectionViewDelegate, UICol
         
     }
     
+    
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-
+        
         //        Get an CardCollectionViewCell object
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "NumberCell", for: indexPath) as! NumbersOfGameCollectionViewCell
-
+        
+        //        var myRect = cell.frame
+        //        let originInRootView = self.collectionView.convert(myRect.origin, to: self.view)
+        
         //        Get the card that the collection view is trying to display
         let number = numberArray[indexPath.row]
         
         //        set that card for the cell
         cell.setNumber(number)
+        
+        //        Added the created cells inside the CellArray
+        cellArray.append(cell)
+        
+        cell.flip()
         
         return cell
     }
@@ -63,7 +71,7 @@ class GameSceneViewController: UIViewController, UICollectionViewDelegate, UICol
         
         //        Get the number that the user selected
         let number = numberArray[indexPath.row]
-    
+        
         if number.isFlipped == false {
             
             //        Flip the number
@@ -78,7 +86,12 @@ class GameSceneViewController: UIViewController, UICollectionViewDelegate, UICol
                 if imageNameToINT - lastPickingNumber == 1 {
                     
                     lastPickingNumber = imageNameToINT
-                    print("serksn")
+                    number.isCorrect = true
+                    
+                    //                    Game Win Check
+                    if imageNameToINT == numberArray.count {
+                        showAlert("cong", "won")
+                    }
                     
                 } else {
                     showAlert("GG", "Game Over")
@@ -93,17 +106,30 @@ class GameSceneViewController: UIViewController, UICollectionViewDelegate, UICol
     //    MARK - Timer Methods
     @objc func timerElapsed() {
         
-        for _ in numberArray {
+        for i in numberArray {
             
-            if milliseconds > 0 {
+            if milliseconds > 0 && i.isFlipped == false {
                 
-
+                i.isFlipped = true
+                
             }
+        }
+        
+        //        When the timer has reached 0
+        for i in numberArray {
             
-            //        When the timer has reached 0
-            if milliseconds <= 0 {
+            if milliseconds <= 0 && i.isFlipped == true {
+                
+                for item in cellArray {
+                    
+                    item.flipBack()
+                    i.isFlipped = false
+                    
+                }
+                
                 timer?.invalidate()
-                timerLabel.isOpaque = true
+                timerLabel.isHidden = true
+                
             }
         }
         
@@ -117,46 +143,36 @@ class GameSceneViewController: UIViewController, UICollectionViewDelegate, UICol
         
     }
     
-    func checkGameEnded() {
-        
-        var isWon = true
-        
-        for item in numberArray {
-            if item.isCorrect == false {
-                isWon = false
-                break
-            }
-        }
-        
-        //        Messaging variables
-        var title = ""
-        var message = ""
-        
-        //        If all items correct  user has won, stop the timer
-        if isWon == true {
-            
-            title = "Cong"
-            message = "You've Won"
-            
-        }
-        
-        //        Show won/lost messaging
-        showAlert(title, message)
-        
-    }
-    
-//    Create Alert Func
+    //    Create Alert Func
     func showAlert(_ title: String, _ message: String) {
         
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         
         let alertAction = UIAlertAction(title: "OK", style: .default)
-        
+        let alertAction2 = UIAlertAction(title: "Play Again", style: .default) { playAgain in
+            
+            self.playAgain()
+            
+        }
         alert.addAction(alertAction)
+        alert.addAction(alertAction2)
+
         present(alert, animated: true)
         
     }
     
+    func playAgain() {
+        
+        lastPickingNumber = 0
+        numberArray = [Number]()
+        cellArray = [NumbersOfGameCollectionViewCell]()
+        numberArray = model.getNumbers()
+        milliseconds = 3 * 1000
+        timerLabel.isHidden = false
+        collectionView.reloadData()
+        timer = Timer.scheduledTimer(timeInterval: 0.001, target: self, selector: #selector(timerElapsed), userInfo: nil, repeats: true)
+        
+    }
     
     
 }
