@@ -39,10 +39,10 @@ class NumbersOfGameCollectionViewCell: UICollectionViewCell {
     
     func remove() {
         
-//        Removes both imageviews from being visible
+        //        Removes both imageviews from being visible
         backImageView.alpha = 0
         
-//        Animate it
+        //        Animate it
         UIView.animate(withDuration: 0.3, delay: 0.5, options: .curveEaseOut, animations: {
             
             self.frontImageView.alpha = 0
@@ -51,4 +51,3 @@ class NumbersOfGameCollectionViewCell: UICollectionViewCell {
     }
     
 }
-

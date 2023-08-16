@@ -8,23 +8,27 @@
 import UIKit
 
 class ViewController: UIViewController {
-
+    
+    @IBOutlet weak var startButton: UIButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
+        startButton.layer.position.x = self.view.frame.width / 2
+        startButton.layer.position.y = self.view.frame.height / 2
+        
     }
-
+    
     @IBAction func startButton(_ sender: Any) {
         
         if let vc = storyboard?.instantiateViewController(withIdentifier: "gameVC") as? GameSceneViewController {
-
+            
             self.present(vc, animated: true)
             
             navigationController?.popViewController(animated: true)
-//            navigationController?.pushViewController(vc, animated: true)
+            //            navigationController?.pushViewController(vc, animated: true)
             
         }
     }
     
 }
-

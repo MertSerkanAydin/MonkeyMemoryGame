@@ -8,7 +8,9 @@
 import Foundation
 
 class Number {
+    
     var imageName = ""
     var isFlipped = false
     var isCorrect = false        // when the number is flipped, is this number the correct number?
+    
 }

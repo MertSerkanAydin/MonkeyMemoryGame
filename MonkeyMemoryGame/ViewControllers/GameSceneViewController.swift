@@ -22,7 +22,6 @@ class GameSceneViewController: UIViewController, UICollectionViewDelegate, UICol
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
         numberArray = model.getNumbers()
         
         collectionView.delegate = self
@@ -43,16 +42,13 @@ class GameSceneViewController: UIViewController, UICollectionViewDelegate, UICol
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        //        Get an CardCollectionViewCell object
+        //        Get an NumbersOfGameCollectionViewCell object
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "NumberCell", for: indexPath) as! NumbersOfGameCollectionViewCell
         
-        //        var myRect = cell.frame
-        //        let originInRootView = self.collectionView.convert(myRect.origin, to: self.view)
-        
-        //        Get the card that the collection view is trying to display
+        //        Get the number that the collection view is trying to display
         let number = numberArray[indexPath.row]
         
-        //        set that card for the cell
+        //        set that number for the cell
         cell.setNumber(number)
         
         //        Added the created cells inside the CellArray
@@ -67,7 +63,6 @@ class GameSceneViewController: UIViewController, UICollectionViewDelegate, UICol
         
         //        Get the cell that the user selected
         let cell = collectionView.cellForItem(at: indexPath) as! NumbersOfGameCollectionViewCell
-        
         
         //        Get the number that the user selected
         let number = numberArray[indexPath.row]
@@ -156,7 +151,7 @@ class GameSceneViewController: UIViewController, UICollectionViewDelegate, UICol
         }
         alert.addAction(alertAction)
         alert.addAction(alertAction2)
-
+        
         present(alert, animated: true)
         
     }
@@ -174,7 +169,4 @@ class GameSceneViewController: UIViewController, UICollectionViewDelegate, UICol
         
     }
     
-    
 }
-
-
