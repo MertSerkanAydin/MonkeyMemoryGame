@@ -14,11 +14,11 @@ class LevelNumberModel {
         //        oluşturulan kartları depolayan array
         var generatedNumbersArray = [LevelNumber]()
         
-        for i in 1...28 {
+        for i in 13...40 {
             
             //            create the first card object
             let level = LevelNumber()
-            level.imageName = "1.\(i)"
+            level.imageName = "\(i)"
             
             generatedNumbersArray.append(level)
                         

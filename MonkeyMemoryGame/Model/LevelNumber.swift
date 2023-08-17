@@ -10,7 +10,7 @@ import Foundation
 class LevelNumber {
     
     var imageName = ""
-    var isClicked = false
-    var isAvailable = true
+    var isDone = true
+    var isAvailable = false
     
 }

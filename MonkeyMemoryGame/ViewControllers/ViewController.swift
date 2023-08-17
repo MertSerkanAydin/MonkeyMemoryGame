@@ -14,6 +14,8 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.view.backgroundColor = UIColor(patternImage: UIImage(named: "viewBackground.png")!)
+        
         startButton.layer.position.x = self.view.frame.width / 2
         startButton.layer.position.y = self.view.frame.height / 2
         
