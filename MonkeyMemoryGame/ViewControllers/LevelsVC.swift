@@ -15,11 +15,12 @@ class LevelsVC: UIViewController, UICollectionViewDelegate, UICollectionViewData
     
     var model = LevelNumberModel()
     var levelArray = [LevelNumber]()
+    static var blackScreen = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        Set the background Color of collectionView and view
+        //        Set the background Color of collectionView and view
         DispatchQueue.main.async {
             self.view.backgroundColor = UIColor.systemTeal
             self.collecionView?.backgroundColor = UIColor.systemTeal
@@ -80,7 +81,148 @@ class LevelsVC: UIViewController, UICollectionViewDelegate, UICollectionViewData
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("sk")
+        
+        //        Get the cell that the user selected
+        let cell = collectionView.cellForItem(at: indexPath) as! LevelsCollectionViewCell
+        
+        //        Get the level that the user selected
+        let level = levelArray[indexPath.row]
+        
+        //        When click the level go to GameVC
+        if level.isAvailable == true && level.isClicked == false {
+            
+//            Level context
+            switch level.imageName {
+            case "1.1":
+                NumberModel.howManyCard = 3
+                GameSceneViewController.milliseconds = 5 * 1000
+                GameSceneViewController.gameDurationSecond = 5 * 1000
+            case "1.2":
+                NumberModel.howManyCard = 4
+                GameSceneViewController.milliseconds = 5 * 1000
+                GameSceneViewController.gameDurationSecond = 5 * 1000
+            case "1.3":
+                NumberModel.howManyCard = 5
+                GameSceneViewController.milliseconds = 5 * 1000
+                GameSceneViewController.gameDurationSecond = 5 * 1000
+            case "1.4":
+                NumberModel.howManyCard = 6
+                GameSceneViewController.milliseconds = 5 * 1000
+                GameSceneViewController.gameDurationSecond = 7 * 1000
+            case "1.5":
+                NumberModel.howManyCard = 7
+                GameSceneViewController.milliseconds = 5 * 1000
+                GameSceneViewController.gameDurationSecond = 7 * 1000
+            case "1.6":
+                NumberModel.howManyCard = 8
+                GameSceneViewController.milliseconds = 5 * 1000
+                GameSceneViewController.gameDurationSecond = 10 * 1000
+            case "1.7":
+                NumberModel.howManyCard = 9
+                GameSceneViewController.milliseconds = 10 * 1000
+                GameSceneViewController.gameDurationSecond = 15 * 1000
+            case "1.8":
+                NumberModel.howManyCard = 10
+                GameSceneViewController.milliseconds = 10 * 1000
+                GameSceneViewController.gameDurationSecond = 20 * 1000
+            case "1.9":
+                NumberModel.howManyCard = 5
+                GameSceneViewController.milliseconds = 5 * 1000
+                GameSceneViewController.gameDurationSecond = 5 * 1000
+                LevelsVC.blackScreen = true
+            case "1.10":
+                NumberModel.howManyCard = 6
+                GameSceneViewController.milliseconds = 5 * 1000
+                GameSceneViewController.gameDurationSecond = 5 * 1000
+                LevelsVC.blackScreen = true
+            case "1.11":
+                NumberModel.howManyCard = 7
+                GameSceneViewController.milliseconds = 5 * 1000
+                GameSceneViewController.gameDurationSecond = 5 * 1000
+                LevelsVC.blackScreen = true
+            case "1.12":
+                NumberModel.howManyCard = 8
+                GameSceneViewController.milliseconds = 5 * 1000
+                GameSceneViewController.gameDurationSecond = 5 * 1000
+                LevelsVC.blackScreen = true
+            case "1.13":
+                NumberModel.howManyCard = 3
+                GameSceneViewController.milliseconds = 5 * 1000
+                GameSceneViewController.gameDurationSecond = 5 * 1000
+            case "1.14":
+                NumberModel.howManyCard = 4
+                GameSceneViewController.milliseconds = 10 * 1000
+                GameSceneViewController.gameDurationSecond = 5 * 1000
+            case "1.15":
+                NumberModel.howManyCard = 5
+                GameSceneViewController.milliseconds = 10 * 1000
+                GameSceneViewController.gameDurationSecond = 5 * 1000
+            case "1.16":
+                NumberModel.howManyCard = 6
+                GameSceneViewController.milliseconds = 10 * 1000
+                GameSceneViewController.gameDurationSecond = 5 * 1000
+            case "1.17":
+                NumberModel.howManyCard = 3
+                GameSceneViewController.milliseconds = 5 * 1000
+                GameSceneViewController.gameDurationSecond = 5 * 1000
+            case "1.18":
+                NumberModel.howManyCard = 4
+                GameSceneViewController.milliseconds = 10 * 1000
+                GameSceneViewController.gameDurationSecond = 5 * 1000
+            case "1.19":
+                NumberModel.howManyCard = 5
+                GameSceneViewController.milliseconds = 10 * 1000
+                GameSceneViewController.gameDurationSecond = 5 * 1000
+            case "1.20":
+                NumberModel.howManyCard = 6
+                GameSceneViewController.milliseconds = 10 * 1000
+                GameSceneViewController.gameDurationSecond = 5 * 1000
+            case "1.21":
+                NumberModel.howManyCard = 3
+                GameSceneViewController.milliseconds = 5 * 1000
+                GameSceneViewController.gameDurationSecond = 5 * 1000
+            case "1.22":
+                NumberModel.howManyCard = 4
+                GameSceneViewController.milliseconds = 10 * 1000
+                GameSceneViewController.gameDurationSecond = 5 * 1000
+            case "1.23":
+                NumberModel.howManyCard = 5
+                GameSceneViewController.milliseconds = 10 * 1000
+                GameSceneViewController.gameDurationSecond = 5 * 1000
+            case "1.24":
+                NumberModel.howManyCard = 6
+                GameSceneViewController.milliseconds = 10 * 1000
+                GameSceneViewController.gameDurationSecond = 5 * 1000
+            case "1.25":
+                NumberModel.howManyCard = 3
+                GameSceneViewController.milliseconds = 5 * 1000
+                GameSceneViewController.gameDurationSecond = 5 * 1000
+            case "1.26":
+                NumberModel.howManyCard = 4
+                GameSceneViewController.milliseconds = 10 * 1000
+                GameSceneViewController.gameDurationSecond = 5 * 1000
+            case "1.27":
+                NumberModel.howManyCard = 5
+                GameSceneViewController.milliseconds = 10 * 1000
+                GameSceneViewController.gameDurationSecond = 5 * 1000
+            case "1.28":
+                NumberModel.howManyCard = 6
+                GameSceneViewController.milliseconds = 10 * 1000
+                GameSceneViewController.gameDurationSecond = 5 * 1000
+
+            default:
+                print("serkan")
+            }
+            
+            
+            if let vc = storyboard?.instantiateViewController(withIdentifier: "gameVC") as? GameSceneViewController {
+                
+                self.present(vc, animated: true)
+                
+                navigationController?.popViewController(animated: true)
+                
+            }
+        }
     }
     
 }

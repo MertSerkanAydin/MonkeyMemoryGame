@@ -29,10 +29,11 @@ class NumbersOfGameCollectionViewCell: UICollectionViewCell {
         
     }
     
-    func flipBack() {
-        
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
-            UIView.transition(from: self.frontImageView, to: self.backImageView, duration: 0.3, options: [.transitionFlipFromRight, .showHideTransitionViews], completion: nil)
+    func flipBack(delayTime: Double, transitionDuration: Double) {
+
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + delayTime) {
+            UIView.transition(from: self.frontImageView, to: self.backImageView, duration: transitionDuration, options: [.transitionFlipFromRight, .showHideTransitionViews], completion: nil)
+            
         }
         
     }

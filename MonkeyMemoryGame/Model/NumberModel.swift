@@ -9,6 +9,8 @@ import Foundation
 
 class NumberModel {
     
+    static var howManyCard = 8
+    
     func getNumbers() -> [Number] {
         
         //         Declare an array to store numbers we've already generated
@@ -17,10 +19,10 @@ class NumberModel {
         //        oluşturulan kartları depolayan array
         var generatedNumbersArray = [Number]()
         
-        while generatedNumbersArray.count < 8 {
+        while generatedNumbersArray.count < NumberModel.howManyCard {
             
             //            get a random number
-            let randomNumber = arc4random_uniform(8) + 1
+            let randomNumber = arc4random_uniform(UInt32(NumberModel.howManyCard)) + 1
             /*
              arc4random_uniform(x) returns a random value between 0 and x-1
              

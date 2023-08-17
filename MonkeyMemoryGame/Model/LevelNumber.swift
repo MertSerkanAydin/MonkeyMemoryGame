@@ -11,6 +11,6 @@ class LevelNumber {
     
     var imageName = ""
     var isClicked = false
-    var isAvailable = false
+    var isAvailable = true
     
 }

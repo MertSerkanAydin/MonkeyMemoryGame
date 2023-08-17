@@ -21,7 +21,7 @@ class ViewController: UIViewController {
     
     @IBAction func startButton(_ sender: Any) {
         
-        if let vc = storyboard?.instantiateViewController(withIdentifier: "gameVC") as? GameSceneViewController {
+        if let vc = storyboard?.instantiateViewController(withIdentifier: "Levels") as? LevelsVC {
             
             self.present(vc, animated: true)
             

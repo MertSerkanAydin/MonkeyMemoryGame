@@ -16,8 +16,13 @@ class GameSceneViewController: UIViewController, UICollectionViewDelegate, UICol
     var numberArray = [Number]()
     var lastPickingNumber = 0
     var cellArray = [NumbersOfGameCollectionViewCell]()
-    var timer: Timer?
-    var milliseconds: Float = 3 * 1000 // 13 Seconds
+    var numberDisplayTimer: Timer?
+    var darkModeTimer: Timer?
+    var gameDurationTimer: Timer?
+    static var milliseconds: Float? // Game start second
+    static var gameDurationSecond: Float?   //Game duration Second
+    var darkModeSecond = 5
+    var millisecondForLevel: Float?   // Second for the each level
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,9 +32,19 @@ class GameSceneViewController: UIViewController, UICollectionViewDelegate, UICol
         collectionView.delegate = self
         collectionView.dataSource = self
         
-        //        Create Timer
-        timer = Timer.scheduledTimer(timeInterval: 0.001, target: self, selector: #selector(timerElapsed), userInfo: nil, repeats: true)
+//        Set the timer label
+        timerLabel.text = "\((GameSceneViewController.milliseconds ?? 0) / 1000)"
         
+//        Adding delay to number display time when level is open
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
+            
+            //        Create Number Display Timer
+            self.numberDisplayTimer = Timer.scheduledTimer(timeInterval: 0.001, target: self, selector: #selector(self.numberDisplayTimerElapsed), userInfo: nil, repeats: true)
+            
+        }
+        
+        //        Set the second for current level
+        millisecondForLevel = GameSceneViewController.milliseconds
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -37,8 +52,6 @@ class GameSceneViewController: UIViewController, UICollectionViewDelegate, UICol
         numberArray.count
         
     }
-    
-    
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
@@ -75,7 +88,7 @@ class GameSceneViewController: UIViewController, UICollectionViewDelegate, UICol
             //            Set the status of the number
             number.isFlipped = true
             
-            //        Game Logic
+            //       MARK - Game Logic
             if let imageNameToINT = Int(number.imageName) {
                 
                 if imageNameToINT - lastPickingNumber == 1 {
@@ -98,40 +111,146 @@ class GameSceneViewController: UIViewController, UICollectionViewDelegate, UICol
         
     }
     
-    //    MARK - Timer Methods
-    @objc func timerElapsed() {
+    //    MARK - Numbers Display Timer Methods
+    @objc func numberDisplayTimerElapsed() {
         
         for i in numberArray {
             
-            if milliseconds > 0 && i.isFlipped == false {
+            //            Turn all numbers
+            if GameSceneViewController.milliseconds ?? 5 > 0 && i.isFlipped == false {
                 
                 i.isFlipped = true
                 
             }
         }
         
-        //        When the timer has reached 0
+        //        When the Display Timer has reached 0
         for i in numberArray {
             
-            if milliseconds <= 0 && i.isFlipped == true {
+            //            Turn off all numbers
+            if GameSceneViewController.milliseconds ?? 5 <= 0 && i.isFlipped == true {
                 
                 for item in cellArray {
                     
-                    item.flipBack()
+//                    Numbers flipBack
+                    item.flipBack(delayTime: 0.5, transitionDuration: 0.3)
                     i.isFlipped = false
                     
                 }
                 
-                timer?.invalidate()
+//                Stop the Display Timer
+                numberDisplayTimer?.invalidate()
                 timerLabel.isHidden = true
                 
             }
         }
         
-        milliseconds -= 1
+        //        For dark mode Levels
+        if GameSceneViewController.milliseconds ?? 5 <= 0 && LevelsVC.blackScreen == true {
+            
+            collectionView.isHidden = true
+            
+            //        Create Dark Mode Timer
+            darkModeTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(darkModeTimerElapsed), userInfo: nil, repeats: true)
+            
+        }
+        
+        //        When display time is over
+        else if GameSceneViewController.milliseconds ?? 5 <= 0 {
+            
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
+                //        Create Game Duration Timer
+                self.gameDurationTimer = Timer.scheduledTimer(timeInterval: 0.001, target: self, selector: #selector(self.gameDurationTimerElapsed), userInfo: nil, repeats: true)
+            }
+            
+        }
+        
+        //        Time reducing
+        if GameSceneViewController.milliseconds != nil {
+            
+            //            Reducing time if millisecond is not nil
+            GameSceneViewController.milliseconds! -= 1
+            
+        } else {
+            
+            //            If millisecond is nil for any reason default time is 5
+            GameSceneViewController.milliseconds = 5 * 1000
+            GameSceneViewController.milliseconds! -= 1
+            
+        }
         
         //        Convert to seconds
-        let seconds = String(format: "%.2f", milliseconds/1000)
+        let seconds = String(format: "%.2f", (GameSceneViewController.milliseconds ?? 5)/1000)
+        
+        //        Set label
+        timerLabel.text = "\(seconds)"
+        
+    }
+    
+    //    MARK - Dark Mode Timer Methods
+    @objc func darkModeTimerElapsed() {
+        
+        LevelsVC.blackScreen = false
+        timerLabel.isHidden = false
+        
+        if darkModeSecond <= 0 {
+            
+            collectionView.isHidden = false
+
+            for item in cellArray {
+                
+                //                    Numbers flipBack
+                item.flipBack(delayTime: 0.0001, transitionDuration: 0)
+            }
+            
+            timerLabel.isHidden = true
+            
+//            Adding delay to Game Duration Timer
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
+                
+                //        Create Game Duration Timer
+                self.gameDurationTimer = Timer.scheduledTimer(timeInterval: 0.001, target: self, selector: #selector(self.gameDurationTimerElapsed), userInfo: nil, repeats: true)
+                
+            }
+
+            darkModeTimer?.invalidate()
+            
+        } else {
+            
+            //        Set label
+            timerLabel.text = "\(darkModeSecond)"
+            
+            darkModeSecond -= 1
+            
+        }
+        
+    }
+    
+    //    MARK - Game Duration Timer Methods
+    @objc func gameDurationTimerElapsed() {
+        
+        timerLabel.isHidden = false
+        
+        //        When Times up
+        if GameSceneViewController.gameDurationSecond! <= 0 {
+            
+//            Stop the timer
+            gameDurationTimer?.invalidate()
+            
+//            Alert when Time's up
+            showAlert("Times Up!!!", "You didn't finish on the time")
+            
+        }
+        
+        //            Reducing time if millisecond is not nil
+        if GameSceneViewController.gameDurationSecond != nil {
+            
+            GameSceneViewController.gameDurationSecond! -= 1
+            
+        }
+        
+        //        Convert to seconds
+        let seconds = String(format: "%.2f", (GameSceneViewController.gameDurationSecond ?? 5)/1000)
         
         //        Set label
         timerLabel.text = "Time Remaining: \(seconds)"
@@ -162,10 +281,10 @@ class GameSceneViewController: UIViewController, UICollectionViewDelegate, UICol
         numberArray = [Number]()
         cellArray = [NumbersOfGameCollectionViewCell]()
         numberArray = model.getNumbers()
-        milliseconds = 3 * 1000
+        GameSceneViewController.milliseconds = millisecondForLevel
         timerLabel.isHidden = false
         collectionView.reloadData()
-        timer = Timer.scheduledTimer(timeInterval: 0.001, target: self, selector: #selector(timerElapsed), userInfo: nil, repeats: true)
+        numberDisplayTimer = Timer.scheduledTimer(timeInterval: 0.001, target: self, selector: #selector(numberDisplayTimerElapsed), userInfo: nil, repeats: true)
         
     }
     
