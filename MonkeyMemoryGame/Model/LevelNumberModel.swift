@@ -11,17 +11,24 @@ class LevelNumberModel {
     
     func getNumbers() -> [LevelNumber] {
         
-        //        oluşturulan kartları depolayan array
+        //        Array that stores the generated numbers
         var generatedNumbersArray = [LevelNumber]()
         
-        for i in 13...40 {
+        for i in 0...27 {
             
-            //            create the first card object
             let level = LevelNumber()
-            level.imageName = "\(i)"
             
-            generatedNumbersArray.append(level)
-                        
+            if LevelsVC.levelCompletionStatusArray[i] == true || LevelsVC.levelCompletionStatusArray[i - 1] == true {
+                //            Create Level numbers
+                level.imageName = "1.\(i)"
+                generatedNumbersArray.append(level)
+            } else {
+                //            Create Level numbers
+                level.imageName = "1.\(i)Lock"
+                generatedNumbersArray.append(level)
+            }
+            
+            
         }
         
         //        return the array

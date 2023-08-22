@@ -14,7 +14,7 @@ class LevelsCollectionViewCell: UICollectionViewCell {
     //    set identifier to cell
     static let identifier = "LevelsCollectionViewCell"
     
-    //    create image view
+    //    create image view for levels
     private let LevelNumberimageView: UIImageView = {
         
         let imageView = UIImageView()
@@ -28,7 +28,7 @@ class LevelsCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         contentView.addSubview(LevelNumberimageView)
         
-        //        Contentview bounds equal to view
+        //        Contentview bounds confined to view
         contentView.clipsToBounds = true
         
     }

@@ -16,12 +16,12 @@ class NumberModel {
         //         Declare an array to store numbers we've already generated
         var generatedRandomNumbersArray = [Int]()
         
-        //        oluşturulan kartları depolayan array
+        //        Array that stores the generated numbers
         var generatedNumbersArray = [Number]()
         
         while generatedNumbersArray.count < NumberModel.howManyCard {
             
-            //            get a random number
+            //            Get a random number
             let randomNumber = arc4random_uniform(UInt32(NumberModel.howManyCard)) + 1
             /*
              arc4random_uniform(x) returns a random value between 0 and x-1
@@ -35,7 +35,9 @@ class NumberModel {
             
             //            Ensure that the random number isn't one we already have
             if generatedRandomNumbersArray.contains(Int(randomNumber)) == false {
+                
                 print(randomNumber)
+                
                 //                Store the number into the generatedNumbersArray
                 generatedRandomNumbersArray.append(Int(randomNumber))
                 
